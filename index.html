@@ -200,30 +200,30 @@
                 const textOptions = { size: 11, color: PDFLib.rgb(0, 0, 0) };
 
                 // Inyección de textos (Ajustar X e Y)
-                page.drawText(menorNombre, { x: 150, y: 720, ...textOptions });
-                page.drawText(menorFechaNac, { x: 450, y: 720, ...textOptions });
+                page.drawText(menorNombre, { x: 146, y: 724, ...textOptions });
+                page.drawText(menorFechaNac, { x: 480, y: 724, ...textOptions });
                 
-                page.drawText(tutorNombre, { x: 150, y: 650, ...textOptions });
-                page.drawText(tutorDni, { x: 450, y: 650, ...textOptions });
-                page.drawText(tutorTelefono, { x: 150, y: 620, ...textOptions });
+                page.drawText(tutorNombre, { x: 146, y: 648, ...textOptions });
+                page.drawText(tutorDni, { x: 430, y: 648, ...textOptions });
+                page.drawText(tutorTelefono, { x: 150, y: 625, ...textOptions });
 
                 // Marcar Autorización (Ajustar X e Y)
                 if (autorizacion === 'si') {
-                    page.drawText('X', { x: 50, y: 400, size: 14, color: PDFLib.rgb(0, 0, 0) });
+                    page.drawText('X', { x: 55, y: 325, size: 14, color: PDFLib.rgb(0, 0, 0) });
                 } else {
-                    page.drawText('X', { x: 50, y: 350, size: 14, color: PDFLib.rgb(0, 0, 0) });
+                    page.drawText('X', { x: 55, y: 280, size: 14, color: PDFLib.rgb(0, 0, 0) });
                 }
 
                 // Inyección de lugar y fecha (Ajustar X e Y)
                 page.drawText(lugarFirma, { x: 80, y: 200, ...textOptions });
-                page.drawText(dia, { x: 200, y: 200, ...textOptions });
-                page.drawText(mes, { x: 250, y: 200, ...textOptions });
-                page.drawText(anio, { x: 320, y: 200, ...textOptions }); // Para el hueco "de 202_"
+                page.drawText(dia, { x: 65, y: 180, ...textOptions });
+                page.drawText(mes, { x: 175, y: 180, ...textOptions });
+                page.drawText(anio, { x: 230, y: 180, ...textOptions }); // Para el hueco "de 202_"
 
                 // Inyección de la firma (Ajustar X, Y, ancho y alto)
                 page.drawImage(signatureImage, {
-                    x: 100,
-                    y: 100,
+                    x: 150,
+                    y: 75,
                     width: 150,
                     height: 75,
                 });
