@@ -177,7 +177,11 @@
                 // Fecha actual para el bloque de firma
                 const fechaActual = new Date();
                 const dia = String(fechaActual.getDate()).padStart(2, '0');
-                const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+                
+                // Array de meses para obtener el nombre del mes en texto
+                const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+                const mes = meses[fechaActual.getMonth()];
+                
                 const anio = String(fechaActual.getFullYear()).slice(-1); // Último dígito para "202_"
 
                 // Carga del documento base
@@ -195,38 +199,40 @@
                 const signatureImageBytes = await fetch(signaturePad.toDataURL()).then(res => res.arrayBuffer());
                 const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
 
-                // Aviso de Coordenadas: 
-                // Los valores de los ejes X e Y requieren ajuste manual según el diseño exacto del PDF de origen A4 (595x842).
+                // Opciones de texto
                 const textOptions = { size: 11, color: PDFLib.rgb(0, 0, 0) };
 
-                // Inyección de textos (Ajustar X e Y)
+                // Inyección de textos superiores
                 page.drawText(menorNombre, { x: 146, y: 724, ...textOptions });
                 page.drawText(menorFechaNac, { x: 480, y: 724, ...textOptions });
                 
                 page.drawText(tutorNombre, { x: 146, y: 648, ...textOptions });
-                page.drawText(tutorDni, { x: 440, y: 648, ...textOptions });
+                page.drawText(tutorDni, { x: 430, y: 648, ...textOptions });
                 page.drawText(tutorTelefono, { x: 150, y: 625, ...textOptions });
 
-                // Marcar Autorización (Ajustar X e Y)
+                // Marcar Autorización
                 if (autorizacion === 'si') {
                     page.drawText('X', { x: 56, y: 323, size: 14, color: PDFLib.rgb(0, 0, 0) });
                 } else {
-                    page.drawText('X', { x: 56, y: 280, size: 14, color: PDFLib.rgb(0, 0, 0) });
+                    page.drawText('X', { x: 56, y: 282, size: 14, color: PDFLib.rgb(0, 0, 0) });
                 }
 
-                // Inyección de lugar y fecha (Ajustar X e Y)
+                // Inyección de lugar y fecha con las coordenadas ajustadas
                 page.drawText(lugarFirma, { x: 65, y: 175, ...textOptions });
-                page.drawText(dia, { x: 175, y: 175, ...textOptions });
+                page.drawText(dia, { x: 177, y: 175, ...textOptions });
                 page.drawText(mes, { x: 230, y: 175, ...textOptions });
-                page.drawText(anio, { x: 275, y: 175, ...textOptions }); // Para el hueco "de 202_"
+                page.drawText(anio, { x: 375, y: 175, ...textOptions }); // Para el hueco "de 202_"
 
-                // Inyección de la firma (Ajustar X, Y, ancho y alto)
+                // Inyección de la firma
                 page.drawImage(signatureImage, {
                     x: 150,
                     y: 75,
                     width: 150,
                     height: 75,
                 });
+                
+                // Inyección del nombre del padre/madre debajo de la firma
+                page.drawText(tutorNombre, { x: 150, y: 70, ...textOptions });
                 
                 // Generación y descarga del Blob
                 const pdfBytes = await pdfDoc.save();
