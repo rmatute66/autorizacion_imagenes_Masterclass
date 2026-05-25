@@ -204,10 +204,10 @@
 
                 // Inyección de textos superiores
                 page.drawText(menorNombre, { x: 146, y: 724, ...textOptions });
-                page.drawText(menorFechaNac, { x: 480, y: 724, ...textOptions });
+                page.drawText(menorFechaNac, { x: 485, y: 724, ...textOptions });
                 
                 page.drawText(tutorNombre, { x: 146, y: 648, ...textOptions });
-                page.drawText(tutorDni, { x: 430, y: 648, ...textOptions });
+                page.drawText(tutorDni, { x: 435, y: 648, ...textOptions });
                 page.drawText(tutorTelefono, { x: 150, y: 625, ...textOptions });
 
                 // Marcar Autorización
@@ -219,7 +219,7 @@
 
                 // Inyección de lugar y fecha con las coordenadas ajustadas
                 page.drawText(lugarFirma, { x: 65, y: 175, ...textOptions });
-                page.drawText(dia, { x: 177, y: 175, ...textOptions });
+                page.drawText(dia, { x: 180, y: 175, ...textOptions });
                 page.drawText(mes, { x: 230, y: 175, ...textOptions });
                 page.drawText(anio, { x: 375, y: 175, ...textOptions }); // Para el hueco "de 202_"
 
@@ -232,7 +232,7 @@
                 });
                 
                 // Inyección del nombre del padre/madre debajo de la firma
-                page.drawText(tutorNombre, { x: 150, y: 70, ...textOptions });
+                page.drawText(tutorNombre, { x: 150, y: 72, ...textOptions });
                 
                 // Generación y descarga del Blob
                 const pdfBytes = await pdfDoc.save();
