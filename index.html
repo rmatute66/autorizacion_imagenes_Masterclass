@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autorización uso de imágenes PCF Pastora Pavón [cite: 1]</title>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        h3, label {
+            display: block;
+            text-align: left;
+            margin-top: 15px;
+            color: #333;
+        }
+        input[type="text"], input[type="date"], input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .legal-box {
+            overflow-y: scroll;
+            height: 200px;
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-top: 10px;
+            background-color: #fff;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        .canvas-container {
+            border: 1px solid #000;
+            background-color: #fff;
+            margin-top: 10px;
+        }
+        canvas {
+            width: 100%;
+            height: 200px;
+            touch-action: none; /* Previene el scroll al firmar en móviles */
+        }
+        button {
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            margin-top: 15px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1em;
+            border-radius: 4px;
+        }
+        button.secondary {
+            background-color: #6c757d;
+            margin-top: 5px;
+        }
+        .radio-group {
+            background: #fff;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Autorización uso de imágenes [cite: 1]</h2>
+    <form id="pdfForm">
+        
+        <h3>1. Datos del menor [cite: 2]</h3>
+        <label>Nombre y apellidos: [cite: 3]</label>
+        <input type="text" id="menorNombre" required>
+        
+        <label>Fecha nacim.: [cite: 7]</label>
+        <input type="date" id="menorFechaNac" required>
+
+        <h3>2. Datos del padre, madre o representante legal [cite: 4]</h3>
+        <label>Nombre y apellidos: [cite: 5]</label>
+        <input type="text" id="tutorNombre" required>
+        
+        <label>DNI/NIE: [cite: 8]</label>
+        <input type="text" id="tutorDni" required>
+        
+        <label>Teléfono de contacto: [cite: 6]</label>
+        <input type="tel" id="tutorTelefono" required>
+
+        <h3>3. Información básica [cite: 9]</h3>
+        <div class="legal-box">
+            <p>La Peña Cultural Flamenca Pastora Pavón "Niña de los Peines" de Arahal podrá realizar fotografías y/o vídeos breves durante actividades del Grupo Joven o de la Peña para su difusión en canales oficiales de la Peña. [cite: 10]</p>
+            <p>Las imágenes se utilizarán de forma respetuosa. La falta de autorización NO impedirá que el menor forme parte del Grupo Joven. [cite: 11]</p>
+            <p><strong>4. Actividad para la que se solicita autorización. Masterclass de baile 05/06/2026 [cite: 12]</strong></p>
+            <p>Esta autorización podrá retirarse en cualquier momento mediante comunicación escrita dirigida a la Peña. [cite: 19] La retirada se aplicará desde su recepción. [cite: 20]</p>
+            <p>Contacto para revocación: María Ángeles Ojeda Pérez. [cite: 21]</p>
+        </div>
+
+        <label>
+            <input type="checkbox" id="aceptoTerminos" required>
+            He leído y acepto los términos de la información básica.
+        </label>
+
+        <h3>5. Autorizaciones para el uso de imágenes [cite: 13]</h3>
+        <p>Marque lo que corresponda: [cite: 14]</p>
+        <div class="radio-group">
+            <label>
+                <input type="radio" name="autorizacion" value="si" required>
+                AUTORIZO la realización y publicación de fotografías y/o vídeos breves en los que pueda aparecer el menor, en redes sociales y demás canales oficiales de la Peña. [cite: 15]
+            </label>
+            <label>
+                <input type="radio" name="autorizacion" value="no">
+                NO AUTORIZO. [cite: 18]
+            </label>
+        </div>
+
+        <h3>6. Firma [cite: 22]</h3>
+        <label>Lugar (En): [cite: 23]</label>
+        <input type="text" id="lugarFirma" required>
+        
+        <label>Firma del padre, madre o representante legal: [cite: 26]</label>
+        <div class="canvas-container">
+            <canvas id="firmaCanvas"></canvas>
+        </div>
+        <button type="button" class="secondary" id="limpiarFirma">Limpiar Firma</button>
+
+        <button type="submit">Generar y Descargar PDF Firmado</button>
+    </form>
+
+    <script>
+        // Inicialización del canvas para la firma
+        const canvas = document.getElementById('firmaCanvas');
+        
+        // Ajuste de resolución del canvas para pantallas de alta densidad
+        function resizeCanvas() {
+            const ratio =  Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = canvas.offsetWidth * ratio;
+            canvas.height = canvas.offsetHeight * ratio;
+            canvas.getContext("2d").scale(ratio, ratio);
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        const signaturePad = new SignaturePad(canvas);
+
+        document.getElementById('limpiarFirma').addEventListener('click', () => {
+            signaturePad.clear();
+        });
+
+        // Manejo del formulario
+        document.getElementById('pdfForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            try {
+                if (signaturePad.isEmpty()) {
+                    throw new Error("Por favor, firme el documento antes de continuar.");
+                }
+
+                // Captura de datos
+                const menorNombre = document.getElementById('menorNombre').value;
+                const rawFechaNac = document.getElementById('menorFechaNac').value;
+                const tutorNombre = document.getElementById('tutorNombre').value;
+                const tutorDni = document.getElementById('tutorDni').value;
+                const tutorTelefono = document.getElementById('tutorTelefono').value;
+                const lugarFirma = document.getElementById('lugarFirma').value;
+                const autorizacion = document.querySelector('input[name="autorizacion"]:checked').value;
+
+                // Formato de Fecha: ISO (AAAA-MM-DD) a Local (DD-MM-AAAA)
+                const menorFechaNac = rawFechaNac.split('-').reverse().join('-');
+
+                // Fecha actual para el bloque de firma
+                const fechaActual = new Date();
+                const dia = String(fechaActual.getDate()).padStart(2, '0');
+                const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+                const anio = String(fechaActual.getFullYear()).slice(-1); // Último dígito para "202_"
+
+                // Carga del documento base
+                const urlPdfBase = './autorizacion_base.pdf';
+                const existingPdfBytes = await fetch(urlPdfBase).then(res => {
+                    if (!res.ok) throw new Error("No se pudo cargar el archivo base: " + urlPdfBase);
+                    return res.arrayBuffer();
+                });
+
+                const pdfDoc = await PDFLib.PDFDocument.load(existingPdfBytes);
+                const pages = pdfDoc.getPages();
+                const page = pages[0];
+
+                // Extraer la firma como imagen PNG
+                const signatureImageBytes = await fetch(signaturePad.toDataURL()).then(res => res.arrayBuffer());
+                const signatureImage = await pdfDoc.embedPng(signatureImageBytes);
+
+                // Aviso de Coordenadas: 
+                // Los valores de los ejes X e Y requieren ajuste manual según el diseño exacto del PDF de origen A4 (595x842).
+                const textOptions = { size: 11, color: PDFLib.rgb(0, 0, 0) };
+
+                // Inyección de textos (Ajustar X e Y)
+                page.drawText(menorNombre, { x: 150, y: 720, ...textOptions });
+                page.drawText(menorFechaNac, { x: 450, y: 720, ...textOptions });
+                
+                page.drawText(tutorNombre, { x: 150, y: 650, ...textOptions });
+                page.drawText(tutorDni, { x: 450, y: 650, ...textOptions });
+                page.drawText(tutorTelefono, { x: 150, y: 620, ...textOptions });
+
+                // Marcar Autorización (Ajustar X e Y)
+                if (autorizacion === 'si') {
+                    page.drawText('X', { x: 50, y: 400, size: 14, color: PDFLib.rgb(0, 0, 0) });
+                } else {
+                    page.drawText('X', { x: 50, y: 350, size: 14, color: PDFLib.rgb(0, 0, 0) });
+                }
+
+                // Inyección de lugar y fecha (Ajustar X e Y)
+                page.drawText(lugarFirma, { x: 80, y: 200, ...textOptions });
+                page.drawText(dia, { x: 200, y: 200, ...textOptions });
+                page.drawText(mes, { x: 250, y: 200, ...textOptions });
+                page.drawText(anio, { x: 320, y: 200, ...textOptions }); // Para el hueco "de 202_"
+
+                // Inyección de la firma (Ajustar X, Y, ancho y alto)
+                page.drawImage(signatureImage, {
+                    x: 100,
+                    y: 100,
+                    width: 150,
+                    height: 75,
+                });
+                
+                // Generación y descarga del Blob
+                const pdfBytes = await pdfDoc.save();
+                const blob = new Blob([pdfBytes], { type: "application/pdf" });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                
+                // Nombre de archivo dinámico basado en el tutor
+                const nombreArchivoSeguro = tutorNombre.replace(/[^a-zA-Z0-9]/g, '_');
+                link.download = `Autorizacion_${nombreArchivoSeguro}.pdf`;
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
+</body>
+</html>
