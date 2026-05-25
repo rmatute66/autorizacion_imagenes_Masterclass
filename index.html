@@ -204,21 +204,21 @@
                 page.drawText(menorFechaNac, { x: 480, y: 724, ...textOptions });
                 
                 page.drawText(tutorNombre, { x: 146, y: 648, ...textOptions });
-                page.drawText(tutorDni, { x: 430, y: 648, ...textOptions });
+                page.drawText(tutorDni, { x: 440, y: 648, ...textOptions });
                 page.drawText(tutorTelefono, { x: 150, y: 625, ...textOptions });
 
                 // Marcar Autorización (Ajustar X e Y)
                 if (autorizacion === 'si') {
-                    page.drawText('X', { x: 55, y: 325, size: 14, color: PDFLib.rgb(0, 0, 0) });
+                    page.drawText('X', { x: 56, y: 323, size: 14, color: PDFLib.rgb(0, 0, 0) });
                 } else {
-                    page.drawText('X', { x: 55, y: 280, size: 14, color: PDFLib.rgb(0, 0, 0) });
+                    page.drawText('X', { x: 56, y: 280, size: 14, color: PDFLib.rgb(0, 0, 0) });
                 }
 
                 // Inyección de lugar y fecha (Ajustar X e Y)
-                page.drawText(lugarFirma, { x: 80, y: 200, ...textOptions });
-                page.drawText(dia, { x: 65, y: 180, ...textOptions });
-                page.drawText(mes, { x: 175, y: 180, ...textOptions });
-                page.drawText(anio, { x: 230, y: 180, ...textOptions }); // Para el hueco "de 202_"
+                page.drawText(lugarFirma, { x: 65, y: 175, ...textOptions });
+                page.drawText(dia, { x: 175, y: 175, ...textOptions });
+                page.drawText(mes, { x: 230, y: 175, ...textOptions });
+                page.drawText(anio, { x: 275, y: 175, ...textOptions }); // Para el hueco "de 202_"
 
                 // Inyección de la firma (Ajustar X, Y, ancho y alto)
                 page.drawImage(signatureImage, {
